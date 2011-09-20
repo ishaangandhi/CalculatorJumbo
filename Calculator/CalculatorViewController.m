@@ -3,17 +3,14 @@
 //  Calculator
 //
 //  Created by Ishaan Gandhi on 5/27/11.
-//  Copyright 2011 __MyCompanyName__. All rights reserved.
+//  Copyright 2011 Ishaan Gandhi Studios. All rights reserved.
 //
 
 #import "CalculatorViewController.h"
-//#import "FBConnect.h"
 
-static NSInteger imageNumber;
 
 @implementation CalculatorViewController
 @synthesize orientation;
-//@synthesize facebook = _facebook;
 
 - (void)dealloc {
     [errorField release];
@@ -33,11 +30,6 @@ static NSInteger imageNumber;
     return YES;
 }
 
-
--(void)changeImage:(NSInteger)image {
-    imageNumber = image;
-}
-
 -(IBAction)AC {
     operand = 0;
     waitingOperand = 0;
@@ -53,7 +45,7 @@ static NSInteger imageNumber;
     NSString *digit = [[sender titleLabel] text];
     [errorField setText:@""];
     [landErrorField setText:@""];
-    if([[screen text] length] > 14) {
+    if([[screen text] length] > 14 && userIsInTheMiddleOfTypingANumber) {
         [errorField setText:@"Maximum digits on screen"];
         [landErrorField setText:@"Maximum digits on screen"];
     }
@@ -64,9 +56,7 @@ static NSInteger imageNumber;
         }
         else {        
             if ([digit isEqualToString:@"00"])
-                return;
-            NSLog(@"%@", digit);
-            
+                return;            
             [screen setText:digit];
             [landScreen setText:digit];
             userIsInTheMiddleOfTypingANumber = YES;
@@ -79,9 +69,11 @@ static NSInteger imageNumber;
     NSString *firstDigit = [screen.text substringWithRange:NSMakeRange(0, 1)];
     if([firstDigit isEqualToString:@"-"]){
         [screen setText:[screen.text substringFromIndex:1]];
+        [landScreen setText:[landScreen.text substringFromIndex:1]];
     }
     else {
         [screen setText:[@"-" stringByAppendingString:screen.text]];
+        [landScreen setText:[@"-" stringByAppendingString:landScreen.text]];
     }
         
 }
